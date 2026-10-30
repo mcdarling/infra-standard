@@ -1,0 +1,1122 @@
+% ---------------------------------------------------------------------------
+% references.bib
+% Sources for "Preliminary Notes on Federated Learning Infrastructure for
+% Biological Countermeasures".
+%
+% Verification status is recorded in the `note` field of each entry:
+%   verified   - primary source or DOI resolution confirmed first-hand
+%   secondary  - confirmed via the official page's indexed content plus
+%                independent corroboration; primary document not read in full
+%   unresolved - sources conflicted or could not be corroborated
+% See the appendix of the accompanying document for why this matters.
+% ---------------------------------------------------------------------------
+
+% ======================= FEDERATED LEARNING: FOUNDATIONS ===================
+
+@article{rieke2020future,
+  author  = {Rieke, Nicola and Hancox, Jonny and Li, Wenqi and Milletar{\`i},
+             Fausto and Roth, Holger R. and Albarqouni, Shadi and Bakas,
+             Spyridon and Galtier, Mathieu N. and Landman, Bennett A. and
+             Maier-Hein, Klaus and Ourselin, S{\'e}bastien and Sheller, Micah
+             and Summers, Ronald M. and Trask, Andrew and Xu, Daguang and
+             Baust, Maximilian and Cardoso, M. Jorge},
+  title   = {The future of digital health with federated learning},
+  journal = {npj Digital Medicine},
+  volume  = {3},
+  pages   = {119},
+  year    = {2020},
+  doi     = {10.1038/s41746-020-00323-1},
+  url     = {https://www.nature.com/articles/s41746-020-00323-1},
+  note    = {secondary}
+}
+
+@article{kairouz2021advances,
+  author  = {Kairouz, Peter and McMahan, H. Brendan and Avent, Brendan and
+             Bellet, Aur{\'e}lien and Bennis, Mehdi and Bhagoji, Arjun Nitin
+             and others},
+  title   = {Advances and Open Problems in Federated Learning},
+  journal = {Foundations and Trends in Machine Learning},
+  volume  = {14},
+  number  = {1--2},
+  year    = {2021},
+  url     = {https://arxiv.org/abs/1912.04977},
+  note    = {secondary}
+}
+
+@article{sheller2020federated,
+  author  = {Sheller, Micah J. and Edwards, Brandon and Reina, G. Anthony and
+             Martin, Jason and Pati, Sarthak and Kotrotsou, Aikaterini and
+             Milchenko, Mikhail and Xu, Weilin and Marcus, Daniel and Colen,
+             Rivka R. and Bakas, Spyridon},
+  title   = {Federated learning in medicine: facilitating multi-institutional
+             collaborations without sharing patient data},
+  journal = {Scientific Reports},
+  volume  = {10},
+  number  = {1},
+  pages   = {12598},
+  year    = {2020},
+  doi     = {10.1038/s41598-020-69250-1},
+  note    = {secondary}
+}
+
+% ==================== FEDERATED LEARNING: REAL DEPLOYMENTS =================
+
+@article{dayan2021federated,
+  author  = {Dayan, Ittai and Roth, Holger R. and Zhong, Aoxiao and Harouni,
+             Ahmed and Gentili, Amilcare and Abidin, Anas Z. and others},
+  title   = {Federated learning for predicting clinical outcomes in patients
+             with {COVID-19}},
+  journal = {Nature Medicine},
+  volume  = {27},
+  number  = {10},
+  pages   = {1735--1743},
+  year    = {2021},
+  doi     = {10.1038/s41591-021-01506-3},
+  url     = {https://www.nature.com/articles/s41591-021-01506-3},
+  note    = {secondary; the EXAM study}
+}
+
+@article{pati2022federated,
+  author  = {Pati, Sarthak and Baid, Ujjwal and Edwards, Brandon and Sheller,
+             Micah and Wang, Shih-Han and Reina, G. Anthony and others},
+  title   = {Federated learning enables big data for rare cancer boundary
+             detection},
+  journal = {Nature Communications},
+  volume  = {13},
+  number  = {1},
+  pages   = {7346},
+  year    = {2022},
+  doi     = {10.1038/s41467-022-33407-5},
+  url     = {https://www.nature.com/articles/s41467-022-33407-5},
+  note    = {secondary; the FeTS study}
+}
+
+@article{pati2023correction,
+  author  = {Pati, Sarthak and Baid, Ujjwal and Edwards, Brandon and others},
+  title   = {Author Correction: Federated learning enables big data for rare
+             cancer boundary detection},
+  journal = {Nature Communications},
+  year    = {2023},
+  doi     = {10.1038/s41467-023-36188-7},
+  url     = {https://www.nature.com/articles/s41467-023-36188-7},
+  note    = {secondary; cite alongside pati2022federated}
+}
+
+@article{heyndrickx2024melloddy,
+  author  = {Heyndrickx, Wouter and Mervin, Lewis and Morawietz, Tobias and
+             Sturm, Noe and Friedrich, Lukas and Zalewski, Adam and others},
+  title   = {{MELLODDY}: Cross-Pharma Federated Learning at Unprecedented
+             Scale Unlocks Benefits in {QSAR} without Compromising
+             Proprietary Information},
+  journal = {Journal of Chemical Information and Modeling},
+  year    = {2024},
+  doi     = {10.1021/acs.jcim.3c00799},
+  url     = {https://pubs.acs.org/doi/10.1021/acs.jcim.3c00799},
+  note    = {secondary}
+}
+
+@misc{li2024challenges,
+  author = {Li, Ming and Xu, Pengcheng and Hu, Junjie and Tang, Zeyu and
+            Yang, Guang},
+  title  = {From Challenges and Pitfalls to Recommendations and
+            Opportunities: Implementing Federated Learning in Healthcare},
+  year   = {2024},
+  eprint = {2409.09727},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2409.09727},
+  note   = {verified; abstract read first-hand. Also published in Medical
+            Image Analysis (2025)}
+}
+
+% ===================== GENERALIZATION AND LEAKAGE ==========================
+
+@article{zech2018variable,
+  author  = {Zech, John R. and Badgeley, Marcus A. and Liu, Manway and
+             Costa, Anthony B. and Titano, Joseph J. and Oermann, Eric Karl},
+  title   = {Variable generalization performance of a deep learning model to
+             detect pneumonia in chest radiographs: A cross-sectional study},
+  journal = {PLOS Medicine},
+  volume  = {15},
+  number  = {11},
+  pages   = {e1002683},
+  year    = {2018},
+  doi     = {10.1371/journal.pmed.1002683},
+  url     = {https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1002683},
+  note    = {secondary}
+}
+
+@article{kapoor2023leakage,
+  author  = {Kapoor, Sayash and Narayanan, Arvind},
+  title   = {Leakage and the reproducibility crisis in
+             machine-learning-based science},
+  journal = {Patterns},
+  volume  = {4},
+  number  = {9},
+  pages   = {100804},
+  year    = {2023},
+  doi     = {10.1016/j.patter.2023.100804},
+  url     = {https://www.cell.com/patterns/fulltext/S2666-3899(23)00159-9},
+  note    = {verified; arXiv preprint 2207.07048 carries the variant title
+             "Leakage and the Reproducibility Crisis in ML-based Science"}
+}
+
+% ========================= DATA QUALITY ====================================
+
+@article{kahn2016harmonized,
+  author  = {Kahn, Michael G. and Callahan, Tiffany J. and Barnard, Juliana
+             and Bauck, Alan E. and Brown, Jeff and Davidson, Bruce N. and
+             Estiri, Hossein and Goerg, Carsten and Holve, Erin and Johnson,
+             Steven G. and Liaw, Siaw-Teng and Hamilton-Lopez, Marianne and
+             Meeker, Daniella and Ong, Toan C. and Ryan, Patrick and Shang,
+             Ning and Weiskopf, Nicole G. and Weng, Chunhua and Zozus, Meredith
+             N. and Schilling, Lisa},
+  title   = {A Harmonized Data Quality Assessment Terminology and Framework
+             for the Secondary Use of Electronic Health Record Data},
+  journal = {eGEMs (Generating Evidence and Methods to improve patient
+             outcomes)},
+  volume  = {4},
+  number  = {1},
+  pages   = {1244},
+  year    = {2016},
+  doi     = {10.13063/2327-9214.1244},
+  note    = {verified via DOI resolution}
+}
+
+@article{blacketer2021increasing,
+  author  = {Blacketer, Clair and Defalco, Frank J. and Ryan, Patrick B. and
+             Rijnbeek, Peter R.},
+  title   = {Increasing trust in real-world evidence through evaluation of
+             observational data quality},
+  journal = {Journal of the American Medical Informatics Association},
+  volume  = {28},
+  number  = {10},
+  pages   = {2251--2257},
+  year    = {2021},
+  doi     = {10.1093/jamia/ocab132},
+  note    = {verified via DOI resolution; the OHDSI Data Quality Dashboard}
+}
+
+@misc{ohdsi_dqd,
+  author       = {{Observational Health Data Sciences and Informatics (OHDSI)}},
+  title        = {{OHDSI} Data Quality Dashboard},
+  howpublished = {\url{https://github.com/OHDSI/DataQualityDashboard}},
+  note         = {secondary}
+}
+
+% ==================== PRIVACY AND SECURITY: ATTACKS/DEFENSES ===============
+
+@inproceedings{bonawitz2017practical,
+  author    = {Bonawitz, Keith and Ivanov, Vladimir and Kreuter, Ben and
+               Marcedone, Antonio and McMahan, H. Brendan and Patel, Sarvar
+               and Ramage, Daniel and Segal, Aaron and Seth, Karn},
+  title     = {Practical Secure Aggregation for Privacy-Preserving Machine
+               Learning},
+  booktitle = {Proceedings of the 2017 ACM SIGSAC Conference on Computer and
+               Communications Security (CCS '17)},
+  pages     = {1175--1191},
+  year      = {2017},
+  doi       = {10.1145/3133956.3133982},
+  url       = {https://dl.acm.org/doi/10.1145/3133956.3133982},
+  note      = {secondary}
+}
+
+@inproceedings{geiping2020inverting,
+  author    = {Geiping, Jonas and Bauermeister, Hartmut and Dr{\"o}ge, Hannah
+               and Moeller, Michael},
+  title     = {Inverting Gradients --- How easy is it to break privacy in
+               federated learning?},
+  booktitle = {Advances in Neural Information Processing Systems 33
+               (NeurIPS 2020)},
+  year      = {2020},
+  url       = {https://arxiv.org/abs/2003.14053},
+  note      = {secondary}
+}
+
+@inproceedings{bagdasaryan2020backdoor,
+  author    = {Bagdasaryan, Eugene and Veit, Andreas and Hua, Yiqing and
+               Estrin, Deborah and Shmatikov, Vitaly},
+  title     = {How To Backdoor Federated Learning},
+  booktitle = {Proceedings of the 23rd International Conference on Artificial
+               Intelligence and Statistics (AISTATS 2020)},
+  volume    = {108},
+  year      = {2020},
+  url       = {https://proceedings.mlr.press/v108/bagdasaryan20a.html},
+  note      = {secondary}
+}
+
+@inproceedings{blanchard2017machine,
+  author    = {Blanchard, Peva and El Mhamdi, El Mahdi and Guerraoui, Rachid
+               and Stainer, Julien},
+  title     = {Machine Learning with Adversaries: Byzantine Tolerant Gradient
+               Descent},
+  booktitle = {Advances in Neural Information Processing Systems 30
+               (NIPS 2017)},
+  year      = {2017},
+  note      = {secondary; the Krum aggregator}
+}
+
+@inproceedings{yin2018byzantine,
+  author    = {Yin, Dong and Chen, Yudong and Ramchandran, Kannan and
+               Bartlett, Peter},
+  title     = {Byzantine-Robust Distributed Learning: Towards Optimal
+               Statistical Rates},
+  booktitle = {Proceedings of the 35th International Conference on Machine
+               Learning (ICML 2018)},
+  year      = {2018},
+  url       = {https://arxiv.org/abs/1803.01498},
+  note      = {secondary; coordinate-wise median and trimmed mean}
+}
+
+@inproceedings{shejwalkar2022back,
+  author    = {Shejwalkar, Virat and Houmansadr, Amir and Kairouz, Peter and
+               Ramage, Daniel},
+  title     = {Back to the Drawing Board: A Critical Evaluation of Poisoning
+               Attacks on Production Federated Learning},
+  booktitle = {2022 IEEE Symposium on Security and Privacy (SP)},
+  year      = {2022},
+  url       = {https://arxiv.org/abs/2108.10241},
+  note      = {verified; abstract read first-hand}
+}
+
+@misc{sok2025benchmarking,
+  author       = {Zhang, Heng and others},
+  title  = {{SoK}: Benchmarking Poisoning Attacks and Defenses in Federated
+            Learning},
+  year   = {2025},
+  eprint = {2502.03801},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2502.03801},
+  note   = {secondary; the FLPoison benchmark}
+}
+
+@article{kaissis2020secure,
+  author  = {Kaissis, Georgios A. and Makowski, Marcus R. and R{\"u}ckert,
+             Daniel and Braren, Rickmer F.},
+  title   = {Secure, privacy-preserving and federated machine learning in
+             medical imaging},
+  journal = {Nature Machine Intelligence},
+  volume  = {2},
+  number  = {6},
+  pages   = {305--311},
+  year    = {2020},
+  doi     = {10.1038/s42256-020-0186-1},
+  note    = {secondary}
+}
+
+@article{kaissis2021endtoend,
+  author  = {Kaissis, Georgios and Ziller, Alexander and Passerat-Palmbach,
+             Jonathan and Ryffel, Th{\'e}o and Usynin, Dmitrii and Trask,
+             Andrew and others},
+  title   = {End-to-end privacy preserving deep learning on multi-institutional
+             medical imaging},
+  journal = {Nature Machine Intelligence},
+  volume  = {3},
+  pages   = {473--484},
+  year    = {2021},
+  doi     = {10.1038/s42256-021-00337-8},
+  note    = {secondary; the PriMIA framework}
+}
+
+@misc{teesok2022,
+  author       = {Mofrad, Saeid and Ahmed, Ishtiaq and Peisert, Sean and
+                  others},
+  title        = {{SoK}: Limitations of Confidential Computing via Trusted
+                  Execution Environments for High-Performance Compute Systems},
+  year         = {2022},
+  howpublished = {\url{https://www.cs.ucdavis.edu/~peisert/research/2022-SEED-TEE-SOK.pdf}},
+  note         = {secondary}
+}
+
+% ======================= GOVERNANCE OF DATA ACCESS =========================
+
+@misc{ritchie_fivesafes,
+  author       = {Ritchie, Felix},
+  title        = {The Five Safes Framework for Trusted Research Environments},
+  howpublished = {\url{https://www.dundee.ac.uk/tre/safe-settings/five-safes-framework}},
+  note         = {secondary; framework originated at the UK Office for
+                  National Statistics}
+}
+
+% ========================= DATA STANDARDS ==================================
+
+@misc{hl7fhir,
+  year         = {2023},
+  author       = {{Health Level Seven International}},
+  title        = {{HL7} {FHIR} --- Fast Healthcare Interoperability Resources},
+  organization = {Health Level Seven International},
+  howpublished = {\url{https://hl7.org/fhir/}},
+  note         = {secondary; R5 (v5.0.0, March 2023) current published, R6 in
+                  normative ballot, R4 (v4.0.1) the deployment reality}
+}
+
+@misc{omopcdm,
+  author       = {{Observational Health Data Sciences and Informatics (OHDSI)}},
+  title        = {{OMOP} Common Data Model},
+  organization = {Observational Health Data Sciences and Informatics (OHDSI)},
+  howpublished = {\url{https://ohdsi.github.io/CommonDataModel/}},
+  note         = {verified via repository README; v5.5 current, a non-breaking
+                  superset of v5.4; v6.0 unsupported by OHDSI tooling}
+}
+
+@misc{cdisc,
+  author       = {{Clinical Data Interchange Standards Consortium}},
+  title        = {{CDISC} Foundational Standards: {SDTM}, {ADaM}, {SEND}},
+  organization = {Clinical Data Interchange Standards Consortium},
+  howpublished = {\url{https://www.cdisc.org/standards}},
+  note         = {unresolved on version numbers; cdisc.org unreachable from
+                  the review environment. SEND is SDTM applied to the
+                  nonclinical (animal toxicology) domain}
+}
+
+@misc{loinc,
+  author       = {{Regenstrief Institute}},
+  title        = {{LOINC} --- Logical Observation Identifiers Names and Codes},
+  organization = {Regenstrief Institute},
+  howpublished = {\url{https://loinc.org/}},
+  note         = {secondary; identifies what was measured, not the result}
+}
+
+@misc{snomedct,
+  author       = {{SNOMED International}},
+  title        = {{SNOMED} {CT}},
+  organization = {SNOMED International},
+  howpublished = {\url{https://www.snomed.org/}},
+  note         = {secondary; requires a licence --- free in member countries
+                  via national release centres, paid otherwise}
+}
+
+@misc{ucum,
+  author       = {{Regenstrief Institute and the UCUM Organization}},
+  title        = {The Unified Code for Units of Measure ({UCUM})},
+  organization = {Regenstrief Institute and the UCUM Organization},
+  howpublished = {\url{https://ucum.org/}},
+  note         = {secondary}
+}
+
+@misc{phenopackets,
+  year         = {2022},
+  author       = {{Global Alliance for Genomics and Health}},
+  title        = {{GA4GH} Phenopacket Schema v2},
+  organization = {Global Alliance for Genomics and Health},
+  howpublished = {\url{https://www.ga4gh.org/product/phenopackets/}},
+  note         = {secondary; published as ISO 4454:2022, the first GA4GH
+                  standard published by ISO}
+}
+
+@misc{ga4ghdrs,
+  author       = {{Global Alliance for Genomics and Health, Cloud Work Stream}},
+  title        = {{GA4GH} Data Repository Service ({DRS}) {API} v1.5.0},
+  organization = {Global Alliance for Genomics and Health, Cloud Work Stream},
+  howpublished = {\url{https://github.com/ga4gh/data-repository-service-schemas}},
+  note         = {verified via repository; an ID-to-access-URL resolution
+                  layer, not a transfer or search protocol}
+}
+
+@misc{ga4ghaai,
+  author       = {{Global Alliance for Genomics and Health, Data Security Work Stream}},
+  title        = {{GA4GH} Authentication and Authorization Infrastructure
+                  ({AAI}) v1.2},
+  organization = {Global Alliance for Genomics and Health, Data Security Work
+                  Stream},
+  howpublished = {\url{https://ga4gh.github.io/data-security/}},
+  note         = {verified via specification source; distinct from the
+                  Passport specification}
+}
+
+@misc{ga4ghpassport,
+  author       = {{Global Alliance for Genomics and Health, Data Use and Researcher Identity Work Stream}},
+  title        = {{GA4GH} Passport v1.2},
+  organization = {Global Alliance for Genomics and Health, Data Use and
+                  Researcher Identity Work Stream},
+  howpublished = {\url{https://ga4gh-duri.github.io/researcher_ids/ga4gh_passport_v1.html}},
+  note         = {verified via specification source}
+}
+
+@misc{dicomps315,
+  author       = {{NEMA / DICOM Standards Committee}},
+  title        = {{DICOM} {PS3.15} Annex E: Attribute Confidentiality
+                  Profiles},
+  organization = {NEMA / DICOM Standards Committee},
+  howpublished = {\url{https://dicom.nema.org/medical/dicom/current/output/chtml/part15/chapter_E.html}},
+  note         = {secondary; the standard states the profiles do not guarantee
+                  de-identification and do not replace a de-identification
+                  process}
+}
+
+@misc{isatools,
+  author       = {{ISA Community}},
+  title        = {The {ISA} Framework (Investigation--Study--Assay)},
+  howpublished = {\url{https://isa-tools.org/}},
+  note         = {secondary; community metadata framework, ELIXIR Recommended
+                  Interoperability Resource, not a ratified SDO standard}
+}
+
+@article{taylor2008mibbi,
+  author  = {Taylor, Chris F. and Field, Dawn and Sansone, Susanna-Assunta and
+             others},
+  title   = {Promoting coherent minimum reporting guidelines for biological and
+             biomedical investigations: the {MIBBI} project},
+  journal = {Nature Biotechnology},
+  volume  = {26},
+  number  = {8},
+  pages   = {889--896},
+  year    = {2008},
+  doi     = {10.1038/nbt.1411},
+  note    = {secondary; historical --- superseded by BioSharing, then
+             FAIRsharing}
+}
+
+@article{mcquilton2016biosharing,
+  author  = {McQuilton, Peter and Gonzalez-Beltran, Alejandra and Rocca-Serra,
+             Philippe and Thurston, Milo and Lister, Allyson and Maguire,
+             Eamonn and Sansone, Susanna-Assunta},
+  title   = {{BioSharing}: curated and crowd-sourced metadata standards,
+             databases and data policies in the life sciences},
+  journal = {Database},
+  volume  = {2016},
+  pages   = {baw075},
+  year    = {2016},
+  doi     = {10.1093/database/baw075},
+  note    = {secondary; now FAIRsharing, \url{https://fairsharing.org/}}
+}
+
+@misc{miappe,
+  author       = {{MIAPPE Consortium}},
+  title        = {{MIAPPE}: Minimum Information About a Plant Phenotyping
+                  Experiment},
+  howpublished = {\url{https://www.miappe.org/}},
+  note         = {secondary; cited here ONLY to record that it is
+                  plant-specific and does not belong in a human biomedical
+                  standards set}
+}
+
+@article{schoch2020ncbi,
+  author  = {Schoch, Conrad L. and Ciufo, Stacy and Domrachev, Mikhail and
+             Hotton, Carol L. and Kannan, Sivakumar and Khovanskaya, Rogneda
+             and others},
+  title   = {{NCBI} Taxonomy: a comprehensive update on curation, resources and
+             tools},
+  journal = {Database},
+  volume  = {2020},
+  pages   = {baaa062},
+  year    = {2020},
+  doi     = {10.1093/database/baaa062},
+  note    = {secondary; a curated classification for sequence records, not a
+             nomenclatural authority}
+}
+
+@misc{w3cprov,
+  year         = {2013},
+  author       = {{W3C}},
+  title        = {{PROV-O}: The {PROV} Ontology},
+  organization = {W3C},
+  howpublished = {\url{https://www.w3.org/TR/prov-o/}},
+  note         = {secondary; W3C Recommendation, 30 April 2013}
+}
+
+@misc{w3cdcat3,
+  year         = {2024},
+  author       = {{W3C}},
+  title        = {Data Catalog Vocabulary ({DCAT}) --- Version 3},
+  organization = {W3C},
+  howpublished = {\url{https://www.w3.org/TR/vocab-dcat-3/}},
+  note         = {secondary; W3C Recommendation, 22 August 2024}
+}
+
+@article{wilkinson2016fair,
+  author  = {Wilkinson, Mark D. and Dumontier, Michel and Aalbersberg,
+             IJsbrand Jan and Appleton, Gabrielle and Axton, Myles and Baak,
+             Arie and Blomberg, Niklas and Boiten, Jan-Willem and da Silva
+             Santos, Luiz Bonino and Bourne, Philip E. and others},
+  title   = {The {FAIR} Guiding Principles for scientific data management and
+             stewardship},
+  journal = {Scientific Data},
+  volume  = {3},
+  pages   = {160018},
+  year    = {2016},
+  doi     = {10.1038/sdata.2016.18},
+  note    = {verified via DOI resolution}
+}
+
+% =================== DOCUMENTATION AND REPORTING ===========================
+
+@article{gebru2021datasheets,
+  author  = {Gebru, Timnit and Morgenstern, Jamie and Vecchione, Briana and
+             Vaughan, Jennifer Wortman and Wallach, Hanna and Daum{\'e} III,
+             Hal and Crawford, Kate},
+  title   = {Datasheets for Datasets},
+  journal = {Communications of the ACM},
+  volume  = {64},
+  number  = {12},
+  pages   = {86--92},
+  year    = {2021},
+  doi     = {10.1145/3458723},
+  note    = {verified; arXiv preprint 1803.09010}
+}
+
+@inproceedings{mitchell2019model,
+  author    = {Mitchell, Margaret and Wu, Simone and Zaldivar, Andrew and
+               Barnes, Parker and Vasserman, Lucy and Hutchinson, Ben and
+               Spitzer, Elena and Raji, Inioluwa Deborah and Gebru, Timnit},
+  title     = {Model Cards for Model Reporting},
+  booktitle = {Proceedings of the Conference on Fairness, Accountability, and
+               Transparency (FAT* '19)},
+  pages     = {220--229},
+  year      = {2019},
+  doi       = {10.1145/3287560.3287596},
+  note      = {verified; the venue was FAT*, renamed ACM FAccT in 2020}
+}
+
+@article{collins2024tripodai,
+  author  = {Collins, Gary S. and Moons, Karel G. M. and Dhiman, Paula and
+             Riley, Richard D. and Beam, Andrew L. and Van Calster, Ben and
+             Ghassemi, Marzyeh and Liu, Xiaoxuan and Reitsma, Johannes B. and
+             van Smeden, Maarten and others},
+  title   = {{TRIPOD+AI} statement: updated guidance for reporting clinical
+             prediction models that use regression or machine learning methods},
+  journal = {BMJ},
+  volume  = {385},
+  pages   = {e078378},
+  year    = {2024},
+  doi     = {10.1136/bmj-2023-078378},
+  note    = {verified via DOI resolution}
+}
+
+@article{vasey2022decideai,
+  author  = {Vasey, Baptiste and Nagendran, Myura and Campbell, Bruce and
+             Clifton, David A. and Collins, Gary S. and Denaxas, Spiros and
+             Denniston, Alastair K. and Faes, Livia and Geerts, Bart and
+             Ibrahim, Mudathir and others},
+  title   = {Reporting guideline for the early-stage clinical evaluation of
+             decision support systems driven by artificial intelligence:
+             {DECIDE-AI}},
+  journal = {Nature Medicine},
+  volume  = {28},
+  number  = {5},
+  pages   = {924--933},
+  year    = {2022},
+  doi     = {10.1038/s41591-022-01772-9},
+  note    = {verified via DOI resolution}
+}
+
+@article{cruzrivera2020spiritai,
+  author  = {Cruz Rivera, Samantha and Liu, Xiaoxuan and Chan, An-Wen and
+             Denniston, Alastair K. and Calvert, Melanie J.},
+  title   = {Guidelines for clinical trial protocols for interventions
+             involving artificial intelligence: the {SPIRIT-AI} extension},
+  journal = {Nature Medicine},
+  volume  = {26},
+  number  = {9},
+  pages   = {1351--1363},
+  year    = {2020},
+  doi     = {10.1038/s41591-020-1037-7},
+  note    = {verified via DOI resolution; SPIRIT-AI covers the protocol}
+}
+
+@article{liu2020consortai,
+  author  = {Liu, Xiaoxuan and Cruz Rivera, Samantha and Moher, David and
+             Calvert, Melanie J. and Denniston, Alastair K.},
+  title   = {Reporting guidelines for clinical trial reports for interventions
+             involving artificial intelligence: the {CONSORT-AI} extension},
+  journal = {Nature Medicine},
+  volume  = {26},
+  number  = {9},
+  pages   = {1364--1374},
+  year    = {2020},
+  doi     = {10.1038/s41591-020-1034-x},
+  note    = {verified via DOI resolution; CONSORT-AI covers the trial report.
+             Co-published simultaneously in BMJ and Lancet Digital Health}
+}
+
+@article{mongan2020claim,
+  author  = {Mongan, John and Moy, Linda and Kahn, Charles E.},
+  title   = {Checklist for Artificial Intelligence in Medical Imaging
+             ({CLAIM}): A Guide for Authors and Reviewers},
+  journal = {Radiology: Artificial Intelligence},
+  volume  = {2},
+  number  = {2},
+  pages   = {e200029},
+  year    = {2020},
+  doi     = {10.1148/ryai.2020200029},
+  note    = {verified via DOI resolution; superseded by the 2024 update}
+}
+
+@article{tejani2024claim,
+  author  = {Tejani, Ali S. and Klontzas, Michail E. and Gatti, Anthony A. and
+             Mongan, John T. and Moy, Linda and Park, Seong Ho and Kahn,
+             Charles E.},
+  title   = {Checklist for Artificial Intelligence in Medical Imaging
+             ({CLAIM}): 2024 Update},
+  journal = {Radiology: Artificial Intelligence},
+  volume  = {6},
+  number  = {4},
+  pages   = {e240300},
+  year    = {2024},
+  doi     = {10.1148/ryai.240300},
+  note    = {verified via DOI resolution}
+}
+
+@article{hernandezboussard2020minimar,
+  author  = {Hernandez-Boussard, Tina and Bozkurt, Selen and Ioannidis, John
+             P. A. and Shah, Nigam H.},
+  title   = {{MINIMAR} ({MINimum} Information for Medical {AI} Reporting):
+             Developing reporting standards for artificial intelligence in
+             health care},
+  journal = {Journal of the American Medical Informatics Association},
+  volume  = {27},
+  number  = {12},
+  pages   = {2011--2015},
+  year    = {2020},
+  doi     = {10.1093/jamia/ocaa088},
+  note    = {verified via DOI resolution; a proposal rather than a
+             Delphi-consensus guideline}
+}
+
+@misc{lekadir2025futureai,
+  author = {Lekadir, Karim and Frangi, Alejandro F. and Porras, Antonio R. and
+            Glocker, Ben and Cintas, Celia and Langlotz, Curtis P. and others},
+  title  = {{FUTURE-AI}: International consensus guideline for trustworthy and
+            deployable artificial intelligence in healthcare},
+  year   = {2025},
+  eprint = {2309.12325},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2309.12325},
+  note   = {verified; 118 experts across 51 countries; also published in BMJ}
+}
+
+% ============== SECURITY, SUPPLY CHAIN AND AI RISK FRAMEWORKS ==============
+
+@techreport{nist80053,
+  author       = {{National Institute of Standards and Technology}},
+  title       = {Security and Privacy Controls for Information Systems and
+                 Organizations},
+  institution = {National Institute of Standards and Technology},
+  number      = {NIST SP 800-53 Rev. 5, Release 5.2.0},
+  year        = {2025},
+  month       = aug,
+  url         = {https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final},
+  note        = {secondary; pin the release, not only the revision}
+}
+
+@techreport{nistcsf2,
+  author       = {{National Institute of Standards and Technology}},
+  title       = {The {NIST} Cybersecurity Framework ({CSF}) 2.0},
+  institution = {National Institute of Standards and Technology},
+  number      = {NIST CSWP 29},
+  year        = {2024},
+  month       = feb,
+  url         = {https://csrc.nist.gov/pubs/cswp/29/the-nist-cybersecurity-framework-csf-20/final},
+  note        = {secondary; adds the GOVERN function}
+}
+
+@techreport{nist800207,
+  author       = {{National Institute of Standards and Technology}},
+  title       = {Zero Trust Architecture},
+  institution = {National Institute of Standards and Technology},
+  number      = {NIST SP 800-207},
+  year        = {2020},
+  month       = aug,
+  url         = {https://csrc.nist.gov/pubs/sp/800/207/final},
+  note        = {secondary; see also SP 800-207A (2023) for cloud-native
+                 multi-cloud access control}
+}
+
+@techreport{nistairmf,
+  author       = {{National Institute of Standards and Technology}},
+  title       = {Artificial Intelligence Risk Management Framework
+                 ({AI} {RMF} 1.0)},
+  institution = {National Institute of Standards and Technology},
+  number      = {NIST AI 100-1},
+  year        = {2023},
+  month       = jan,
+  url         = {https://www.nist.gov/itl/ai-risk-management-framework},
+  note        = {verified that the NIST AI Resource Center carries a notice
+                 that AI RMF 1.0 is being updated; no 1.1/2.0 published as of
+                 late 2026}
+}
+
+@techreport{nistai6001,
+  author       = {{National Institute of Standards and Technology}},
+  title       = {Artificial Intelligence Risk Management Framework: Generative
+                 Artificial Intelligence Profile},
+  institution = {National Institute of Standards and Technology},
+  number      = {NIST AI 600-1},
+  year        = {2024},
+  month       = jul,
+  url         = {https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf},
+  note        = {secondary; identifies CBRN information and capability among
+                 twelve generative-AI risk areas}
+}
+
+@techreport{nistai1002,
+  author       = {{National Institute of Standards and Technology}},
+  title       = {Adversarial Machine Learning: A Taxonomy and Terminology of
+                 Attacks and Mitigations},
+  institution = {National Institute of Standards and Technology},
+  number      = {NIST AI 100-2e2025},
+  year        = {2025},
+  month       = mar,
+  doi         = {10.6028/NIST.AI.100-2e2025},
+  url         = {https://csrc.nist.gov/pubs/ai/100/2/e2025/final},
+  note        = {secondary; supersedes the 2023 edition}
+}
+
+@misc{slsa,
+  author       = {{Open Source Security Foundation (OpenSSF)}},
+  title        = {{SLSA}: Supply-chain Levels for Software Artifacts,
+                  Specification v1.2},
+  howpublished = {\url{https://slsa.dev/spec/v1.2/}},
+  year         = {2025},
+  note         = {secondary; slsa.dev unreachable from the review environment.
+                  v1.2 approved 12 November 2025, adding the Source Track}
+}
+
+@misc{intoto,
+  author       = {{in-toto project}},
+  title        = {{in-toto} Attestation Framework v1.2.0},
+  howpublished = {\url{https://github.com/in-toto/attestation}},
+  note         = {verified via release tags}
+}
+
+@misc{iso42001,
+  author       = {{ISO/IEC}},
+  title        = {{ISO/IEC} 42001:2023 --- Information technology ---
+                  Artificial intelligence --- Management system},
+  organization = {ISO/IEC},
+  year         = {2023},
+  howpublished = {\url{https://www.iso.org/standard/42001}},
+  note         = {secondary; a management-system standard, not a technical
+                  AI-safety standard}
+}
+
+@misc{iso27701,
+  author       = {{ISO/IEC}},
+  title        = {{ISO/IEC} 27701:2025 --- Privacy information management
+                  systems},
+  organization = {ISO/IEC},
+  year         = {2025},
+  howpublished = {\url{https://www.iso.org/standard/27701}},
+  note         = {secondary; 2nd edition, 14 October 2025 --- now a standalone
+                  standard, no longer an extension to ISO/IEC 27001}
+}
+
+% ===================== MEDICAL AND PHARMACEUTICAL REGULATION ===============
+
+@misc{fdapccp2024,
+  author       = {{U.S. Food and Drug Administration}},
+  title        = {Marketing Submission Recommendations for a Predetermined
+                  Change Control Plan for Artificial Intelligence-Enabled
+                  Device Software Functions},
+  organization = {U.S. Food and Drug Administration},
+  year         = {2024},
+  month        = dec,
+  howpublished = {Final guidance; Federal Register notice 4 December 2024,
+                  Docket FDA-2022-D-2628},
+  url          = {https://www.fda.gov/regulatory-information/search-fda-guidance-documents/marketing-submission-recommendations-predetermined-change-control-plan-artificial-intelligence},
+  note         = {secondary}
+}
+
+@misc{fdalifecycle2025,
+  author       = {{U.S. Food and Drug Administration}},
+  title        = {Artificial Intelligence-Enabled Device Software Functions:
+                  Lifecycle Management and Marketing Submission
+                  Recommendations},
+  organization = {U.S. Food and Drug Administration},
+  year         = {2025},
+  month        = jan,
+  howpublished = {Draft guidance, 7 January 2025; not finalized as of late
+                  2026},
+  url          = {https://www.fda.gov/media/184856/download},
+  note         = {secondary; draft --- do not cite as binding}
+}
+
+@misc{fdaaidrug2025,
+  author       = {{U.S. Food and Drug Administration}},
+  title        = {Considerations for the Use of Artificial Intelligence To
+                  Support Regulatory Decision-Making for Drug and Biological
+                  Products},
+  organization = {U.S. Food and Drug Administration},
+  year         = {2025},
+  month        = jan,
+  howpublished = {Draft guidance, Federal Register 7 January 2025},
+  url          = {https://www.fda.gov/regulatory-information/search-fda-guidance-documents/considerations-use-artificial-intelligence-support-regulatory-decision-making-drug-and-biological},
+  note         = {unresolved on whether a final version issued in 2026}
+}
+
+@misc{fdaema2026,
+  author       = {{U.S. Food and Drug Administration and European Medicines Agency}},
+  title        = {Guiding Principles of Good {AI} Practice in Drug Development},
+  organization = {U.S. Food and Drug Administration and European Medicines
+                  Agency},
+  year         = {2026},
+  month        = jan,
+  url          = {https://www.fda.gov/about-fda/artificial-intelligence-drug-development/guiding-principles-good-ai-practice-drug-development},
+  note         = {secondary; ten joint principles, published 14 January 2026}
+}
+
+@misc{gmlp2021,
+  author       = {{U.S. Food and Drug Administration, Health Canada, and {MHRA}}},
+  title        = {Good Machine Learning Practice for Medical Device
+                  Development: Guiding Principles},
+  organization = {U.S. Food and Drug Administration, Health Canada, and
+                  {MHRA}},
+  year         = {2021},
+  month        = oct,
+  url          = {https://www.fda.gov/media/153486/download},
+  note         = {secondary; ten principles. Principle 4 requires independent
+                  training and test datasets}
+}
+
+@misc{iec62304,
+  author       = {{IEC}},
+  title        = {{IEC} 62304:2006/{Amd} 1:2015 --- Medical device software ---
+                  Software life cycle processes (Edition 1.1)},
+  organization = {IEC},
+  year         = {2015},
+  howpublished = {\url{https://www.iso.org/standard/64686.html}},
+  note         = {secondary; corrected version November 2017. Edition 2 not
+                  published as of late 2026}
+}
+
+@misc{iso14971,
+  author       = {{ISO}},
+  title        = {{ISO} 14971:2019 --- Medical devices --- Application of risk
+                  management to medical devices},
+  organization = {ISO},
+  year         = {2019},
+  note         = {secondary; systematically reviewed and confirmed March 2025}
+}
+
+@misc{iso13485,
+  author       = {{ISO}},
+  title        = {{ISO} 13485:2016 --- Medical devices --- Quality management
+                  systems},
+  organization = {ISO},
+  year         = {2016},
+  note         = {secondary; reconfirmed 31 October 2025. Incorporated by
+                  reference into the FDA QMSR, effective 2 February 2026}
+}
+
+@misc{mhra2018dataintegrity,
+  author       = {{Medicines and Healthcare products Regulatory Agency}},
+  title        = {{`GXP'} Data Integrity Guidance and Definitions, Revision 1},
+  organization = {Medicines and Healthcare products Regulatory Agency},
+  year         = {2018},
+  month        = mar,
+  note         = {secondary; formalizes ALCOA+}
+}
+
+@misc{pics041,
+  author       = {{Pharmaceutical Inspection Co-operation Scheme}},
+  title        = {Good Practices for Data Management and Integrity in
+                  Regulated {GMP}/{GDP} Environments},
+  organization = {Pharmaceutical Inspection Co-operation Scheme},
+  number       = {PI 041-1},
+  year         = {2021},
+  month        = jul,
+  url          = {https://picscheme.org/docview/4234},
+  note         = {secondary; the most broadly adopted data-integrity guidance}
+}
+
+@misc{gmpannex22draft,
+  author       = {{European Medicines Agency / PIC/S GMP-GDP Inspectors Working Group}},
+  title        = {Draft {EU} {GMP} Annex 22: Artificial Intelligence, and
+                  revised Annex 11},
+  organization = {European Medicines Agency / PIC/S GMP-GDP Inspectors
+                  Working Group},
+  year         = {2025},
+  month        = jul,
+  howpublished = {Published for consultation 7 July 2025; consultation closed
+                  7 October 2025; final text targeted Q4 2026},
+  note         = {secondary; as drafted, would restrict AI in GMP-critical
+                  applications to static, deterministic models}
+}
+
+% ========================= EU DATA AND AI LAW ==============================
+
+@misc{euaiact2024,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Regulation ({EU}) 2024/1689 laying down harmonised rules on
+                  artificial intelligence (Artificial Intelligence Act)},
+  organization = {European Parliament and Council of the European Union},
+  year         = {2024},
+  note         = {secondary; in force 1 August 2024}
+}
+
+@misc{euomnibus2026,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Regulation ({EU}) 2026/1744 amending Regulations ({EU})
+                  2024/1689, ({EU}) 2018/1139 and ({EU}) 2023/1230 as regards
+                  the simplification of harmonised rules on artificial
+                  intelligence (Digital Omnibus on {AI})},
+  organization = {European Parliament and Council of the European Union},
+  year         = {2026},
+  month        = jul,
+  url          = {https://eur-lex.europa.eu/eli/reg/2026/1744/oj/eng},
+  note         = {verified independently; OJ 24 July 2026, in force 27 July
+                  2026. Defers Annex III high-risk obligations to 2 December
+                  2027 and Annex I to 2 August 2028}
+}
+
+@misc{gdpr,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Regulation ({EU}) 2016/679 (General Data Protection
+                  Regulation)},
+  organization = {European Parliament and Council of the European Union},
+  year         = {2016},
+  note         = {secondary; Arts. 5(1)(b), 9(2)(j), 25, 26, 32, 35, 89 and
+                  Chapter V are the provisions most relevant to federated
+                  biomedical analysis}
+}
+
+@misc{edpb28_2024,
+  author       = {{European Data Protection Board}},
+  title        = {Opinion 28/2024 on certain data protection aspects related to
+                  the processing of personal data in the context of {AI}
+                  models},
+  organization = {European Data Protection Board},
+  year         = {2024},
+  month        = dec,
+  url          = {https://edpb.europa.eu},
+  note         = {secondary}
+}
+
+@misc{ehds2025,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Regulation ({EU}) 2025/327 on the European Health Data Space},
+  organization = {European Parliament and Council of the European Union},
+  year         = {2025},
+  note         = {secondary; in force 26 March 2025; secondary-use regime
+                  applies from 26 March 2029}
+}
+
+% =================== BIOSECURITY AND DUAL-USE GOVERNANCE ===================
+
+@misc{durcpepp2024,
+  author       = {{U.S. Office of Science and Technology Policy}},
+  title        = {United States Government Policy for Oversight of Dual Use
+                  Research of Concern and Pathogens with Enhanced Pandemic
+                  Potential},
+  organization = {U.S. Office of Science and Technology Policy},
+  year         = {2024},
+  month        = may,
+  note         = {secondary; RESCINDED --- replaced by the 2026 policy below}
+}
+
+@misc{eo14292,
+  author       = {{The White House}},
+  title        = {Executive Order 14292: Improving the Safety and Security of
+                  Biological Research},
+  organization = {The White House},
+  year         = {2025},
+  month        = may,
+  url          = {https://www.govinfo.gov/app/details/DCPD-202500561},
+  note         = {secondary; signed 5 May 2025}
+}
+
+@misc{usgstopping2026,
+  author       = {{U.S. Office of Science and Technology Policy}},
+  title        = {United States Government Policy for Stopping High-Risk Life
+                  Sciences Research},
+  organization = {U.S. Office of Science and Technology Policy},
+  year         = {2026},
+  month        = jul,
+  howpublished = {Approved 20 July 2026; released 28 July 2026},
+  url          = {https://www.aspr.gov/readiness-response/medical-countermeasures-biodefense/s3/high-consequence-research-oversight/USG-Policy-For-Stopping-High-Risk-Life-Sciences-Research},
+  note         = {verified independently that this policy exists and replaces
+                  the 2024 DURC/PEPP policy. The full text could NOT be
+                  retrieved; the DGOF and IROC definitions, and whether
+                  in-silico work is in scope, remain unresolved}
+}
+
+@misc{eo14110,
+  author       = {{The White House}},
+  title        = {Executive Order 14110: Safe, Secure, and Trustworthy
+                  Development and Use of Artificial Intelligence},
+  organization = {The White House},
+  year         = {2023},
+  month        = oct,
+  note         = {secondary; RESCINDED 20 January 2025 by EO 14148. Artifacts
+                  produced under it, including the NIST AI RMF, survive}
+}
+
+@misc{aiactionplan2025,
+  author       = {{The White House}},
+  title        = {Winning the {AI} Race: America's {AI} Action Plan},
+  organization = {The White House},
+  year         = {2025},
+  month        = jul,
+  note         = {secondary; successor policy document to EO 14110 section 4.4
+                  on biosecurity}
+}
+
+@misc{nucleicacid2024,
+  author       = {{U.S. Office of Science and Technology Policy}},
+  title        = {Framework for Nucleic Acid Synthesis Screening},
+  organization = {U.S. Office of Science and Technology Policy},
+  year         = {2024},
+  month        = apr,
+  url          = {https://aspr.hhs.gov/S3/Pages/OSTP-Framework-for-Nucleic-Acid-Synthesis-Screening.aspx},
+  note         = {secondary; EO 14292 directed revision or replacement within
+                  90 days; no replacement published as of late 2026}
+}
+
+@book{nasem2025ai,
+  title     = {The Age of {AI} in the Life Sciences: Benefits and Biosecurity
+               Considerations},
+  author    = {{National Academies of Sciences, Engineering, and Medicine}},
+  publisher = {The National Academies Press},
+  address   = {Washington, DC},
+  year      = {2025},
+  url       = {https://nap.nationalacademies.org/catalog/28868},
+  note      = {secondary; finds risk concentrates at the AI-to-wet-lab
+               interface rather than in the model itself}
+}
+
+@misc{nihguidelines,
+  author       = {{National Institutes of Health, Office of Science Policy}},
+  title        = {{NIH} Guidelines for Research Involving Recombinant or
+                  Synthetic Nucleic Acid Molecules},
+  organization = {National Institutes of Health, Office of Science Policy},
+  url          = {https://osp.od.nih.gov/policies/biosafety-and-biosecurity-policy/},
+  note         = {secondary; operative but being replaced. IBC minutes from
+                  meetings on or after 1 June 2025 must be posted publicly}
+}
+
+@misc{nihdraftbiosafety2026,
+  author       = {{National Institutes of Health}},
+  title        = {Draft {NIH} Biosafety Policy for Research Involving
+                  Biohazards},
+  organization = {National Institutes of Health},
+  number       = {Guide Notice NOT-OD-26-112},
+  year         = {2026},
+  month        = aug,
+  howpublished = {Released 19 August 2026; comment period closed 19 October
+                  2026},
+  url          = {https://grants.nih.gov/grants/guide/notice-files/NOT-OD-26-112.html},
+  note         = {secondary; would replace the NIH Guidelines entirely}
+}
+
+@misc{bis3a069,
+  author       = {{U.S. Bureau of Industry and Security}},
+  title        = {Controls on Certain Laboratory Equipment and Related
+                  Technology To Address Dual Use Concerns About Biotechnology},
+  organization = {U.S. Bureau of Industry and Security},
+  year         = {2025},
+  month        = jan,
+  howpublished = {Interim Final Rule; Federal Register 16 January 2025},
+  url          = {https://www.federalregister.gov/documents/2025/01/16/2025-00723/controls-on-certain-laboratory-equipment-and-related-technology-to-address-dual-use-concerns-about},
+  note         = {secondary; creates ECCN 3A069 and 3E069}
+}
+
+@misc{bisdiffusionrescind,
+  author       = {{U.S. Bureau of Industry and Security}},
+  title        = {Rescission of the Framework for Artificial Intelligence
+                  Diffusion},
+  organization = {U.S. Bureau of Industry and Security},
+  year         = {2025},
+  month        = may,
+  url          = {https://www.bis.gov/press-release/department-commerce-announces-rescission-biden-era-artificial-intelligence-diffusion-rule-strengthens},
+  note         = {secondary; rescinded 12 May 2025. There is consequently no
+                  general US export control on AI model weights as such}
+}

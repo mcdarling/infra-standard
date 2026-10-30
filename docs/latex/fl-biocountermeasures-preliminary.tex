@@ -1,0 +1,1107 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------------------------------------------------------------------------
+% Preliminary Notes on Infrastructure, Data Standards and Data Management
+% for Federated Learning in Biological Countermeasures
+%
+% Build:
+%   pdflatex fl-biocountermeasures-preliminary
+%   bibtex   fl-biocountermeasures-preliminary
+%   pdflatex fl-biocountermeasures-preliminary
+%   pdflatex fl-biocountermeasures-preliminary
+% ---------------------------------------------------------------------------
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hyphens]{url}
+\usepackage[hidelinks,breaklinks=true]{hyperref}
+
+% Long DOIs and standards-body URLs are unbreakable tokens; give TeX room to
+% resolve them rather than letting them run into the margin.
+\setlength{\emergencystretch}{3em}
+\makeatletter
+\providecommand{\UrlBreaks}{}
+\g@addto@macro\UrlBreaks{\do\/\do\-\do\.\do\_\do\=\do\&\do\?}
+\makeatother
+
+\definecolor{flagcolor}{RGB}{140,20,20}
+\newcommand{\flag}[1]{\textcolor{flagcolor}{\textbf{#1}}}
+
+% Evidence-strength markers used throughout.
+\newcommand{\verified}{\textsc{[verified]}}
+\newcommand{\secondary}{\textsc{[secondary]}}
+\newcommand{\unresolved}{\flag{\textsc{[unresolved]}}}
+
+% A recurring three-part block: the concern, the evidence, the open questions.
+\newcommand{\concern}[1]{\par\medskip\noindent\textbf{Concern.} #1}
+\newcommand{\evidence}[1]{\par\smallskip\noindent\textbf{What the literature says.} #1}
+\newcommand{\investigate}{\par\smallskip\noindent\textbf{Worth investigating.}}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\footnotesize Preliminary notes --- not a standard}
+\lhead{\footnotesize FL for biological countermeasures}
+\cfoot{\thepage}
+
+\title{\textbf{Infrastructure, Data Standards and Data Management for\\
+Federated Learning in Biological Countermeasures}\\[0.4em]
+\large Preliminary Notes: Concerns and an Investigation Agenda}
+
+\author{}
+\date{Evidence current as of 25 September 2026\\[0.3em]
+\small Compiled 30 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{abstract}
+\noindent
+These are preliminary notes, not a standard. They set out what appears
+worth \emph{worrying about} when building federated learning (FL) pipelines
+for medical and biological countermeasure work, what the published
+literature does and does not establish about each worry, and which
+questions seem to need real investigation before anyone commits to an
+architecture.
+
+Nothing here should be read as a requirement or a compliance baseline.
+Several sections record open questions whose answers would change the
+design substantially, and at least one --- whether purely computational
+biological design work falls within the scope of current US high-risk
+life-sciences research policy (Section~\ref{sec:biosecurity}) --- could
+determine whether a programme of this kind is in regulatory scope at all.
+The architecture sketch in Section~\ref{sec:architecture} is offered as a
+straw man to argue with rather than a recommendation.
+
+Claims carry evidence markers (Section~\ref{sec:howtoread}). The appendix
+records what could and could not be verified, and why that limitation is
+itself material.
+\end{abstract}
+
+\tableofcontents
+
+% ===========================================================================
+\section{Purpose and status}
+
+The question these notes respond to is: \emph{how should one think about
+infrastructure, data standards and data management so that federated
+pipelines for biological countermeasures are safe, secure and reliable?}
+
+They are deliberately framed as concerns rather than answers, for three
+reasons.
+
+\begin{itemize}
+  \item \textbf{The evidence base is thinner than the enthusiasm.} A 2024
+  review of healthcare FL concluded that ``the vast majority are not
+  appropriate for clinical use'' \citep{li2024challenges}. Prescribing a
+  standard on top of that literature would overstate what is known.
+
+  \item \textbf{Several key questions are genuinely open.} Where the
+  literature is contested --- notably adversarial robustness
+  (Section~\ref{sec:adversarial}) --- the useful output is a statement of
+  the disagreement and what would resolve it, not a picked side.
+
+  \item \textbf{The regulatory ground is moving fast.} Between early 2025
+  and mid 2026, the governing US dual-use research policy was rescinded and
+  replaced, an AI executive order was rescinded, EU AI Act high-risk
+  obligations were deferred, and an export-control rule on AI model weights
+  was withdrawn. Section~\ref{sec:regulatory} has a short half-life by
+  construction.
+\end{itemize}
+
+\paragraph{What these notes are not.} Not a specification, not a controls
+baseline, not legal or regulatory advice, and not a claim that federated
+learning is the right architecture for any particular programme ---
+Section~\ref{sec:alternatives} argues the opposite should be tested first.
+
+\paragraph{Scope boundary worth stating early.} The subject is a pipeline
+that produces evidence for human decision-makers. It does not design
+biological agents or interventions, does not drive laboratory automation,
+and does not make clinical or regulatory determinations. That boundary is
+easy to state and harder to establish formally, which is the substance of
+Section~\ref{sec:biosecurity}.
+
+% ===========================================================================
+\section{How to read this document}
+\label{sec:howtoread}
+
+Every substantive claim carries one of three markers reflecting how well it
+could actually be checked:
+
+\begin{description}
+  \item[\verified] Primary source read first-hand, or DOI resolution
+  confirmed directly.
+  \item[\secondary] Confirmed via the official page's indexed content plus
+  at least two independent corroborating sources, but the primary document
+  was not read in full.
+  \item[\unresolved] Sources conflicted, or the claim could not be
+  corroborated. These are research tasks, not facts, and are collected in
+  Section~\ref{sec:agenda}.
+\end{description}
+
+The proportion of \secondary{} markers is high, and that is a limitation of
+the review rather than of the sources. The appendix explains why.
+
+% ===========================================================================
+\section{Starting point: what federation appears to buy}
+
+\subsection{The encouraging evidence}
+
+Biomedical data is rarely poolable: it sits in hospital systems, national
+laboratories, public-health agencies, contract research organisations and
+commercial sponsors, under incompatible legal bases. Federated learning
+moves the model to the data instead \citep{rieke2020future,
+kairouz2021advances, sheller2020federated}. Three results suggest this can
+produce genuine scientific value rather than only a governance convenience:
+
+\begin{itemize}
+  \item \textbf{EXAM} \citep{dayan2021federated} --- 20 hospitals across
+  five continents predicting COVID-19 oxygen requirements, reporting average
+  AUC above 0.92 and roughly a 38\% average increase in generalisability
+  over single-site models. \secondary
+
+  \item \textbf{FeTS} \citep{pati2022federated, pati2023correction} --- the
+  largest such study to date at 71 sites across 6 continents, $n = 6{,}314$
+  glioblastoma cases, reporting 33\% improvement in delineating the
+  surgically targetable tumour and 23\% for complete tumour extent against a
+  publicly-trained model. \secondary
+
+  \item \textbf{MELLODDY} \citep{heyndrickx2024melloddy} --- ten competing
+  pharmaceutical companies, 2.6 billion confidential activity data points,
+  each reporting model improvements without exposing proprietary data.
+  Evidence that federation can cross \emph{competitive}, not merely
+  institutional, trust boundaries. \secondary
+\end{itemize}
+
+\subsection{The counterweight, which deserves equal billing}
+
+These are the published successes, and they required extraordinary
+institutional effort. The median outcome looks different:
+\citet{li2024challenges} reviewed healthcare FL through May 2024 and
+concluded the vast majority of work is not appropriate for clinical use,
+citing privacy, generalisation and communication deficiencies. \verified
+
+A frequently repeated claim holds that only about 5.2\% of published
+healthcare FL studies represent real clinical deployment. The source for
+this could not be reached and the figure should not be used until checked.
+\unresolved
+
+\subsection{What inverts relative to centralised machine learning}
+
+\begin{center}
+\begin{tabular}{L{0.30\textwidth} L{0.32\textwidth} L{0.26\textwidth}}
+\toprule
+\textbf{Centralised assumption} & \textbf{Federated reality} &
+\textbf{Discussed in} \\
+\midrule
+One schema, one curation team & $N$ schemas, $N$ curation cultures &
+Section~\ref{sec:semantics} \\
+Debug by inspecting the data & You never inspect it; you debug through
+statistics and contracts & Section~\ref{sec:quality} \\
+One trust boundary & Every participant is a dependency \emph{and} a
+possible adversary & Section~\ref{sec:adversarial} \\
+Availability is one platform's problem & Availability is the product of all
+participants' & Section~\ref{sec:reliability} \\
+Model output is the only artifact & Gradients, metrics and loss curves are
+disclosure channels & Section~\ref{sec:privacy} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Federation reduces raw-data movement risk. It does not obviously reduce ---
+and may concentrate --- model-mediated disclosure risk, data-quality risk
+and dual-use risk.
+
+\subsection{Federation may not be the right answer}
+\label{sec:alternatives}
+
+\concern{Choosing FL early, on governance grounds, before testing whether a
+simpler architecture would do.}
+
+\evidence{The \textbf{Five Safes} model --- safe projects, people, settings,
+data and outputs --- underpins Trusted Research Environments and is the
+mature alternative for controlled analysis of sensitive data
+\citep{ritchie_fivesafes}. \secondary{} It matters here for a second reason
+as well: ``safe outputs'' is \emph{statistical disclosure control}, a
+discipline with decades of methodology behind it. Any egress mechanism an FL
+platform builds (Section~\ref{sec:privacy}) is a re-invention of that
+discipline unless it binds to it deliberately. The EU's European Health Data
+Space \citep{ehds2025} is converging on the same shape: computation inside a
+certified secure processing environment, with only anonymised or
+pseudonymised data leaving.}
+
+\investigate
+\begin{itemize}
+  \item For the specific scientific question at hand, would a TRE with
+  pooled governed access outperform federation on time-to-result, given the
+  legal bases actually available?
+  \item Is the binding constraint legal, political, or commercial? These
+  have different architectural answers, and conflating them tends to
+  produce FL by default.
+  \item What does the programme lose by never being able to inspect the
+  data, and is that cost acknowledged in the project plan?
+\end{itemize}
+
+% ===========================================================================
+\section{Concerns}
+
+\subsection{Scientific validity and site confounding}
+\label{sec:validity}
+
+\concern{A model that performs well across participating sites may be
+learning the sites rather than the biology, and conventional validation will
+not reveal it.}
+
+\evidence{This is demonstrated, not hypothetical. \citet{zech2018variable}
+trained pneumonia classifiers on 158,323 radiographs across three
+institutions and found significantly worse performance on outside-hospital
+images in 3 of 5 comparisons, because the networks identified hospital
+system and department with high accuracy and calibrated to local disease
+prevalence. \secondary{} Separately, leakage is a widespread rather than
+occasional failure: \citet{kapoor2023leakage} document it across at least
+294 papers in 17 disciplines, offering a taxonomy of eight leakage types and
+a ``model info sheet'' as a mitigation. \verified{} On the reporting side,
+disaggregated evaluation --- performance broken down by demographic,
+phenotypic and intersectional groups --- is the defining contribution of
+model cards \citep{mitchell2019model} and is routinely omitted. \verified}
+
+\investigate
+\begin{itemize}
+  \item Can site, instrument, reagent lot and collection period be
+  \emph{named} as variables for every participating site? If not, claims
+  that the model learned biology rather than logistics are not testable.
+  \item How many genuinely held-out sites are available, and who controls
+  them? Evaluation that reports to the training team is not evaluation.
+  \item Is train/test independence enforced at the site and patient level
+  rather than the sample level? Regulatory guidance already expects this
+  \citep{gmlp2021}, and it is the split most often got wrong.
+  \item What is the pre-registered evaluation plan, and what would count as
+  a negative result?
+\end{itemize}
+
+\subsection{Data semantics: what a row means at every site}
+\label{sec:semantics}
+
+\concern{The hardest part of federated work is not the learning. It is
+agreeing what a field means across institutions that never compare raw
+records --- and the failure mode is silent.}
+
+\evidence{A substantial standards ecosystem exists and should be bound to
+rather than reinvented. Table~\ref{tab:standards} records what could be
+established about each, including version details that matter in practice.}
+
+\begin{center}
+\small
+\begin{longtable}{L{0.20\textwidth} L{0.22\textwidth} L{0.46\textwidth}}
+\caption{Standards worth binding to, with version notes. Verified where the
+domain was reachable; most standards-body sites were blocked from the review
+environment (see appendix).}
+\label{tab:standards}\\
+\toprule
+\textbf{Domain} & \textbf{Standard} & \textbf{Notes} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Domain} & \textbf{Standard} & \textbf{Notes} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Clinical / EHR exchange & HL7 FHIR \citep{hl7fhir} &
+R5 (v5.0.0, 2023) is current published; R6 is in normative ballot only. But
+R4 (v4.0.1) remains the deployment reality for US Core and EHDS work ---
+choose deliberately. \secondary \\
+\addlinespace
+Observational analytics & OMOP CDM \citep{omopcdm} &
+v5.5 current, a non-breaking superset of v5.4. v6.0 exists but is
+\emph{unsupported} by the OHDSI tool stack; never cite it as latest.
+\verified \\
+\addlinespace
+Clinical trial data & CDISC SDTM, ADaM \citep{cdisc} &
+SDTM is as-collected tabulation, ADaM analysis-ready with traceability.
+Version numbers \unresolved. \\
+\addlinespace
+Nonclinical toxicology & CDISC SEND \citep{cdisc} &
+SEND is SDTM \emph{applied to the nonclinical domain} --- animal toxicology,
+not clinical. Include only if preclinical safety is in scope. \secondary \\
+\addlinespace
+Lab observations & LOINC \citep{loinc} &
+Names what was measured, not the result. Free licence. \secondary \\
+\addlinespace
+Clinical concepts & SNOMED CT \citep{snomedct} &
+\flag{Requires a licence} --- free in member countries via national release
+centres, paid otherwise. \secondary \\
+\addlinespace
+Units & UCUM \citep{ucum} &
+``Unified \emph{Code} for Units of Measure'' --- singular. \secondary \\
+\addlinespace
+Phenotype exchange & GA4GH Phenopackets v2 \citep{phenopackets} &
+Published as ISO 4454:2022, the first GA4GH standard published by ISO.
+\secondary \\
+\addlinespace
+Data resolution & GA4GH DRS v1.5.0 \citep{ga4ghdrs} &
+An ID-to-access-URL resolution layer, \emph{not} a transfer protocol and not
+a search API. \verified \\
+\addlinespace
+Researcher authorisation & GA4GH AAI v1.2 \citep{ga4ghaai} and Passport
+v1.2 \citep{ga4ghpassport} &
+\flag{Two distinct specifications} from two work streams. AAI is the OIDC
+protocol; Passport is the token format. Writing ``Passports/AAI'' as one
+thing is imprecise. \verified \\
+\addlinespace
+Imaging de-identification & DICOM PS3.15 Annex E \citep{dicomps315} &
+E.2 Basic Profile plus named Options; Table E.1-1 is the per-attribute
+action table. \flag{The standard itself states the profiles do not guarantee
+de-identification and do not replace a de-identification process.}
+Burned-in pixel data, private tags and free-text descriptors are the
+residual-risk vectors. \secondary \\
+\addlinespace
+Experiment metadata & ISA framework \citep{isatools} &
+Domain-neutral community framework, ELIXIR Recommended Interoperability
+Resource. Not a ratified SDO standard --- describe it accurately.
+\secondary \\
+\addlinespace
+Standards discovery & FAIRsharing \citep{mcquilton2016biosharing} &
+The live successor to MIBBI \citep{taylor2008mibbi} via BioSharing. MIBBI no
+longer exists as an active registry. \secondary \\
+\addlinespace
+Organism identity & NCBI Taxonomy \citep{schoch2020ncbi} &
+The nomenclature repository for INSDC. \emph{Not} an authoritative
+phylogenetic or nomenclatural authority --- NCBI says so itself.
+\secondary \\
+\addlinespace
+Provenance & W3C PROV-O \citep{w3cprov} &
+Recommendation since 2013, stable. Cite PROV-O specifically for the RDF
+ontology. \secondary \\
+\addlinespace
+Catalogue metadata & W3C DCAT 3 \citep{w3cdcat3} &
+Recommendation, August 2024, built on PROV-O terms. The health profile
+HealthDCAT-AP is separate and evolving --- do not conflate. \secondary \\
+\addlinespace
+Findability principles & FAIR \citep{wilkinson2016fair} &
+See the caveat below: FAIR is not a standard. \verified \\
+\end{longtable}
+\end{center}
+
+\paragraph{Three corrections worth recording, because all three are easy
+mistakes.}
+
+\begin{itemize}
+  \item \flag{MIAPPE does not belong in a human biomedical standards set.}
+  It is the \emph{Minimum Information About a Plant Phenotyping Experiment}
+  \citep{miappe}; its entities are germplasm, growth facility, field plot
+  layout and agronomic treatment. An earlier draft of these notes cited it.
+  That was wrong, and it is the kind of error that signals a standards list
+  assembled without domain checking. \secondary
+
+  \item \flag{MINSEQE is orphaned.} The FGED Society dissolved in September
+  2021. It is citable as a historical checklist only, never as a live
+  standard with a governing body. \secondary
+
+  \item \flag{``FAIR compliance'' is not a meaningful claim.} FAIR
+  \citep{wilkinson2016fair} has no conformance test, no version and no
+  certifying body. The defensible phrasing is that a platform
+  \emph{implements} the FAIR principles via DCAT, PROV and persistent
+  identifiers. Note also that \emph{Accessible} does not mean \emph{open}
+  --- FAIR explicitly accommodates authenticated, controlled access, which
+  is precisely why GA4GH Passports and AAI are its right companions for
+  human data.
+\end{itemize}
+
+\paragraph{The mechanism that seems to matter most.} A versioned,
+machine-readable \emph{feature contract} per model family --- authored
+centrally, enforced locally --- specifying for each field: logical name,
+semantic type and unit; source code system with version; permissible values
+and the action on violation; whether missingness is informative and how it
+is encoded; derivation as executable code rather than prose; and
+sensitivity class. Harmonisation then runs at the edge, so mapping logic
+stays with the people who understand the source system, and mapping bugs
+surface in conformance reports rather than requiring access to raw records.
+
+\investigate
+\begin{itemize}
+  \item Which standard versions will actually be bound, and is every coded
+  field carrying \texttt{(system, version, code)}?
+  \item What happens to unmapped values? Silent coercion is the failure
+  mode; an explicit unmapped queue with the original string retained
+  locally is the alternative.
+  \item How are contract versions enforced across a round --- can a round
+  silently mix versions?
+  \item Who owns each site's mapping specification, and is an unreviewed
+  mapping change treated as the production change it is?
+  \item Does SNOMED CT licensing actually cover every participating
+  jurisdiction? This is a real blocker that tends to surface late.
+\end{itemize}
+
+\subsection{Data quality without being able to look}
+\label{sec:quality}
+
+\concern{Quality must be asserted, tested remotely and attested --- and
+there is a strong temptation to invent a bespoke taxonomy for this.}
+
+\evidence{A canonical framework exists. \citet{kahn2016harmonized} is the
+harmonised terminology for secondary use of EHR data, and it has
+\emph{two} axes, the second of which is routinely dropped:
+
+\begin{description}
+  \item[Categories] \textbf{Conformance} (value, relational,
+  computational); \textbf{Completeness}; \textbf{Plausibility} (uniqueness,
+  atemporal, temporal). Note the asymmetry --- conformance and plausibility
+  have subcategories, completeness does not.
+  \item[Contexts] \textbf{Verification} against internal expectations and
+  metadata; \textbf{Validation} against an external gold standard or
+  real-world referent.
+\end{description}
+
+\verified{} The OHDSI Data Quality Dashboard
+\citep{blacketer2021increasing, ohdsi_dqd} operationalises exactly this
+taxonomy against OMOP as 24 parameterised check types instantiated as more
+than 3,000 individual checks, each tagged verification or validation. (Those
+two numbers describe templates and instantiations respectively and are often
+conflated.) \verified}
+
+\paragraph{But federated quality assessment has no agreed standard.} Kahn
+supplies terminology, the DQD supplies an OMOP implementation, and the
+operational patterns come from FDA Sentinel (a coordinating centre
+distributes check programs, sites execute locally, results return) and
+PCORnet (which adapted Sentinel's approach to assess ``foundational data
+quality'' --- fitness across a research portfolio rather than per study).
+The standard critique is that these are \emph{top-down}: sites must satisfy
+centrally defined targets rather than assess in local context, and
+cross-network comparability remains open. \secondary
+
+\investigate
+\begin{itemize}
+  \item Can the programme adopt Kahn's terminology directly, including the
+  verification/validation axis, rather than growing a parallel scheme?
+  \item What is the actual gate policy --- are failing sites excluded with a
+  stated reason, or quietly down-weighted? The latter hides the problem in
+  the model.
+  \item How is cross-site duplication \emph{risk} estimated without
+  exchanging identifiers?
+  \item How is label quality established: provenance, adjudication
+  procedure, inter-rater agreement?
+  \item Is there an explicit leakage check for fields encoding the outcome
+  or post-outcome information \citep{kapoor2023leakage}?
+  \item On deletion: does it propagate to snapshots, caches, checkpoints and
+  derived artifacts, with a per-participant attestation? And does consent
+  withdrawal imply retraining? Removing one subject's influence from a
+  trained model retroactively is expensive and sometimes infeasible, so the
+  answer belongs in the data-use agreement rather than in an incident.
+\end{itemize}
+
+\subsection{Privacy: stating precisely what each mechanism guarantees}
+\label{sec:privacy}
+
+\concern{Privacy mechanisms are often described in ways that overstate what
+they deliver, and federation itself is frequently assumed to remove a
+programme from data-protection scope.}
+
+\evidence{Three findings deserve to be stated exactly.
+
+\textbf{Secure aggregation} \citep{bonawitz2017practical} gives a
+communication-efficient, dropout-robust protocol by which a server computes
+a \emph{sum} over a cohort without learning any individual contribution.
+\secondary{} Its limit: it protects the individual update, not the
+aggregate. Anything inferable from the sum remains inferable. Secure
+aggregation and differential privacy are complements, not substitutes.
+
+\textbf{Gradient inversion is more feasible than often assumed.}
+\citet{geiping2020inverting} reconstruct images at high resolution from
+parameter gradients, report that input to a fully connected layer is
+analytically reconstructible independent of the rest of the architecture,
+and state that averaging gradients over several iterations or several images
+does \emph{not} protect privacy. \secondary{} An earlier draft of these
+notes offered large cohort sizes as a defence against inversion; that was
+not supportable.
+
+\textbf{The unit of privacy is where $\varepsilon$ reporting goes wrong.}
+Example-level and client-level differential privacy give materially
+different guarantees. In a multi-hospital setting the entity needing
+protection is usually the \emph{patient}, who may contribute many records,
+so a single-record definition degrades accordingly. An $\varepsilon$
+reported without its unit, accounting method and composition assumptions is
+not a privacy claim. \secondary
+
+End-to-end integration has been demonstrated: PriMIA
+\citep{kaissis2021endtoend} combines differentially private, securely
+aggregated federated learning with encrypted inference on paediatric chest
+radiographs, reporting performance comparable to locally trained models and
+empirical resistance to a gradient-based inversion attack; see also
+\citet{kaissis2020secure}. \secondary}
+
+\paragraph{Data-protection scope.} Gradients, embeddings and weights derived
+from personal data are frequently still personal data under GDPR
+\citep{gdpr, edpb28_2024}; federation does not automatically take a
+programme out of scope. Federated consortia also usually create
+\emph{joint controllership} rather than processorship, which is an Article 26
+arrangement best settled before the first training round. \secondary
+
+\investigate
+\begin{itemize}
+  \item What exactly is the disclosure-control policy on egress --- artifact
+  types, shapes, minimum cell sizes, suppression rules --- and does it bind
+  to statistical disclosure control practice \citep{ritchie_fivesafes}
+  rather than being bespoke?
+  \item What is the declared unit of privacy, and who enforces the budget?
+  A ledger the platform enforces behaves differently from a convention.
+  \item Are per-site metrics, loss curves and error analyses treated as
+  disclosure channels, or do they circulate informally? The latter is
+  common and rarely reviewed.
+  \item Would a dedicated review of the DP accounting literature change the
+  parameter choices? These notes did not examine it in depth and should not
+  be relied on for it. \unresolved
+  \item Confidential computing is attractive but not a clean answer:
+  side-channel attacks are the primary documented threat to TEEs and enclave
+  memory limits constrain ML workloads \citep{teesok2022}. Is it being used
+  as defence in depth or as the privacy argument? \secondary
+\end{itemize}
+
+\subsection{Adversarial robustness, where the literature genuinely disagrees}
+\label{sec:adversarial}
+
+\concern{The obvious reading of the attack literature is that federated
+learning is dangerously fragile. The obvious reading of the critique
+literature is that it is fine. Both readings are available, and an earlier
+draft of these notes picked a side without acknowledging the dispute.}
+
+\evidence{Laid out in sequence:
+
+\begin{itemize}
+  \item \textbf{Attacks succeed under their stated assumptions.}
+  \citet{bagdasaryan2020backdoor} show model-replacement backdoors reaching
+  100\% backdoor accuracy in a single round, with an attacker controlling
+  fewer than 1\% of participants able to prevent the model from unlearning
+  the backdoor. \secondary
+
+  \item \textbf{Defences have formal but bounded guarantees.} Krum
+  \citep{blanchard2017machine} and coordinate-wise median / trimmed mean
+  \citep{yin2018byzantine}, the latter with order-optimal statistical error
+  rates under subexponential gradient noise, are the canonical robust
+  estimators. \secondary
+
+  \item \textbf{The threat models were largely unrealistic.}
+  \citet{shejwalkar2022back} systematise the space and conclude that prior
+  work assumed impractically high compromised-client fractions and adversary
+  capability, finding that ``FL is highly robust in practice even when using
+  simple, low-cost defenses.'' \verified
+
+  \item \textbf{Defence evaluation remains weak.}
+  \citet{sok2025benchmarking} observe that defences are typically evaluated
+  in isolation against limited attack strategies, and benchmark 15 attacks
+  against 17 defences across 2,040 settings. \secondary
+\end{itemize}}
+
+\paragraph{Why the disagreement may not resolve in this setting.}
+\citet{shejwalkar2022back} ground their reassurance in \emph{cross-device}
+production FL with large participant populations. A biomedical consortium is
+\emph{cross-silo}: few participants, each holding large influence, where a
+single compromised site is a far larger fraction of the update than in the
+setting that study examined. The reassurance may simply not transfer. What
+does appear to transfer, because it does not depend on out-detecting a
+clever adversary, is contractual and identity vetting at enrollment, bounds
+enforcement on update norms and per-cohort contribution, per-site influence
+monitoring, and independent held-out evaluation.
+
+\investigate
+\begin{itemize}
+  \item Does any published result characterise poisoning robustness in the
+  cross-silo, few-participant regime specifically? If not, this is a
+  research gap the programme may have to fill itself rather than assume
+  away.
+  \item What bound on any single participant's per-round influence is
+  acceptable, and is it enforced by construction or detected after the
+  fact?
+  \item Is there an isolation procedure for a misbehaving participant, and
+  has it been \emph{rehearsed}? An unrehearsed kill switch is a hypothesis.
+  \item For threat-model vocabulary, NIST AI 100-2e2025
+  \citep{nistai1002} organises attacks by lifecycle stage and attacker
+  goal, capability and knowledge, with an attack/mitigation index. Is the
+  programme's threat model written in a shared vocabulary or an ad hoc one?
+  \secondary
+  \item Supply chain: SLSA \citep{slsa} asserts build-platform integrity and
+  in-toto \citep{intoto} supplies the attestation envelope. The interesting
+  question is whether in-toto predicates can be extended beyond build
+  provenance to \emph{dataset}, \emph{model-weight} and
+  \emph{evaluation-result} attestation, so a model carries a verifiable
+  chain back to its training corpus and its review.
+\end{itemize}
+
+\subsection{Reliability when partial participation is normal}
+\label{sec:reliability}
+
+\concern{Sites will be unavailable, slow, mid-migration or failing quality
+gates. A design that treats full participation as the default will stall;
+but the dominant risk may not be availability at all.}
+
+\evidence{Statistical heterogeneity, not downtime, appears to be the
+dominant performance risk: non-IID label and feature distributions across
+sites cause client drift and unstable convergence, and quantity imbalance
+compounds it. \secondary{} The practical implication is that the engineering
+needed for partial participation --- quorum rounds, bounded staleness,
+per-round checkpointing, idempotent retryable stages, cohort-weighted
+aggregation with caps --- is necessary but will not by itself produce a
+model that transfers.}
+
+\investigate
+\begin{itemize}
+  \item What participation floor constitutes a valid round, and is who
+  participated recorded per round?
+  \item What is the straggler and deadline policy, and is it in
+  configuration or decided case by case?
+  \item How much work does a coordinator failure cost, and has recovery been
+  tested by drill rather than argued on paper?
+  \item Which service levels should have \emph{no} error budget? Integrity
+  and privacy objectives are plausible candidates --- they are not
+  tradeable against delivery speed in the way latency is.
+  \item Are adversarial and chaos drills scheduled --- dropping a site
+  mid-round, corrupting a delta, replaying a stale update, simulating
+  coordinator loss?
+\end{itemize}
+
+% ===========================================================================
+\section{Regulatory and governance currency}
+\label{sec:regulatory}
+
+\concern{Compliance artifacts built on remembered rather than checked policy
+will be wrong, because an unusual amount changed in 2025--2026. This section
+is the most perishable in the document.}
+
+\subsection{Medical device and pharmaceutical regimes}
+
+\begin{itemize}
+  \item \textbf{The FDA PCCP guidance is final} \citep{fdapccp2024} and is
+  arguably the single most consequential document for pipeline
+  architecture. A Predetermined Change Control Plan authorises pre-specified
+  modifications without a new marketing submission, requiring a bounded
+  Description of Modifications, a Modification Protocol (data management,
+  re-training, performance evaluation and acceptance criteria) and an Impact
+  Assessment. The design consequence: a retraining loop, drift monitoring,
+  dataset versioning and acceptance thresholds must be \emph{writable into a
+  Modification Protocol up front}, or each model refresh becomes a new
+  submission. \secondary
+
+  \item \textbf{The FDA AI device lifecycle guidance remains draft}
+  \citep{fdalifecycle2025} --- issued January 2025, not finalised. Not
+  binding. \secondary
+
+  \item \textbf{The FDA AI-in-drug-development guidance}
+  \citep{fdaaidrug2025} introduces a seven-step risk-based Credibility
+  Assessment Framework anchored on Context of Use, implying a credibility
+  dossier \emph{per context of use} rather than per model. Whether a final
+  version issued in 2026 is \unresolved.
+
+  \item \textbf{FDA and EMA published joint AI principles in January 2026}
+  \citep{fdaema2026} --- ten principles, the first such alignment for
+  medicines. \secondary
+
+  \item \textbf{GMLP principles} \citep{gmlp2021} are what reviewers
+  actually apply. Principle 4 (independent training and test datasets)
+  dictates splitting at site and patient level; principle 7 evaluates the
+  human--AI team rather than the model alone. \secondary
+
+  \item \textbf{Lifecycle and quality standards are stable}, which is worth
+  knowing precisely because other things are not: IEC 62304 Edition 1.1
+  remains current with Edition 2 unpublished \citep{iec62304}; ISO 14971
+  \citep{iso14971} was reconfirmed in 2025 and its post-production feedback
+  loop is where drift monitoring legally attaches; ISO 13485
+  \citep{iso13485} was reconfirmed in late 2025 and is incorporated by
+  reference into the FDA QMSR effective February 2026. IEC 62304's
+  \emph{SOUP} provisions are where an ML framework, CUDA stack and any
+  pretrained weights land --- a foundation model in a Class C device is SOUP
+  with an awkward anomaly history. \secondary
+
+  \item \textbf{ALCOA+ maps onto technical controls} more cleanly than its
+  reputation suggests \citep{mhra2018dataintegrity, pics041}:
+  attributable/contemporaneous to a signed, server-timestamped immutable
+  audit log; original to retaining raw source plus a verified true copy
+  rather than only derived features; enduring/available to readability over
+  a retention period that for biologics may outlive the ML framework
+  itself. \secondary
+
+  \item \flag{Draft EU GMP Annex 22 on artificial intelligence}
+  \citep{gmpannex22draft} went to consultation in July 2025, closed in
+  October 2025, with final text targeted for Q4 2026 --- so not in force. As
+  drafted it would restrict AI in GMP-critical applications to
+  \emph{static, deterministic models}, excluding dynamic and
+  continuously-learning models. A manufacturing decision path that assumes a
+  continuously-learning model is therefore at architectural risk.
+  \secondary
+\end{itemize}
+
+\subsection{EU data and AI law}
+
+\begin{itemize}
+  \item \flag{EU AI Act high-risk obligations were deferred.} Regulation
+  (EU) 2024/1689 \citep{euaiact2024} was amended by Regulation (EU)
+  2026/1744 \citep{euomnibus2026}, in force 27 July 2026 --- six days before
+  the original deadline. Annex III standalone high-risk moved from 2 August
+  2026 to \textbf{2 December 2027}; Annex I, which covers AI in MDR/IVDR
+  devices, moved to \textbf{2 August 2028}. Prohibited practices,
+  general-purpose AI obligations and Article 50 transparency duties were
+  \emph{not} deferred. \verified{} Any analysis written before July 2026 that
+  assumes an August 2026 bite is now wrong.
+
+  \item Most clinical AI reaches high-risk via \emph{Annex I rather than
+  Annex III}, because an AI-enabled medical device already requires
+  third-party conformity assessment. Articles 9 and 17 map substantially
+  onto ISO 14971 and ISO 13485; \textbf{Article 10 on data and data
+  governance has no clean MDR analogue and is the genuine new work};
+  Article 12 automatic logging is a hard architectural requirement.
+  \secondary
+
+  \item \flag{The GDPR ``Data Omnibus'' was not adopted.} Only the AI
+  Omnibus passed. Proposed GDPR amendments --- including making research
+  processing always purpose-compatible --- remain in negotiation, and the
+  EDPB/EDPS joint opinion of February 2026 is strongly critical. Designing
+  to the proposed text would be a mistake. \secondary
+
+  \item The \textbf{European Health Data Space} \citep{ehds2025} is in force
+  since March 2025, with general application March 2027 and the
+  secondary-use regime from \textbf{March 2029}: access via national Health
+  Data Access Bodies issuing permits, inside a secure processing
+  environment, with only anonymised or pseudonymised data leaving. Building
+  for that access pattern now is not premature. \secondary
+\end{itemize}
+
+\subsection{Security and AI-risk frameworks}
+
+\begin{itemize}
+  \item \textbf{NIST SP 800-53} \citep{nist80053} --- pin the
+  \emph{release}, not only the revision. Release 5.2.0 (August 2025) adds
+  controls on software resiliency by design, developer testing, secure
+  update and patch deployment, and software integrity. \secondary
+  \item \textbf{NIST CSF 2.0} \citep{nistcsf2} adds the GOVERN function and
+  strengthened supply-chain outcomes, which is what auditors use to ask who
+  owns model-risk decisions. \secondary
+  \item \textbf{Zero trust} \citep{nist800207} --- treat each training job,
+  feature store, model registry and inference endpoint as a separately
+  authenticated subject rather than relying on network perimeter.
+  \secondary
+  \item \flag{The NIST AI RMF is under active revision}
+  \citep{nistairmf} --- the NIST AI Resource Center carries a notice to that
+  effect, with no 1.1 or 2.0 published. \verified{} Pin the version and date
+  in any compliance artifact. The Generative AI Profile
+  \citep{nistai6001} identifies CBRN information and capability among twelve
+  risk areas. \secondary
+  \item \textbf{ISO/IEC 42001} \citep{iso42001} is a \emph{management
+  system} standard, not a technical AI-safety standard. It provides a
+  governance wrapper; it will not satisfy EU AI Act technical requirements,
+  FDA credibility expectations or any biosecurity control on its own.
+  \flag{ISO/IEC 27701:2025} \citep{iso27701} is now standalone and
+  separately certifiable, with scope expanded to AI-related processing and
+  health data. \secondary
+\end{itemize}
+
+% ===========================================================================
+\section{Biosecurity and dual-use: the largest open question}
+\label{sec:biosecurity}
+
+\concern{The governing US policy changed fundamentally in 2026, and whether
+a computational pipeline of this kind is in scope at all is unresolved.}
+
+\evidence{The 2024 DURC/PEPP policy \citep{durcpepp2024} was overtaken by
+Executive Order 14292 \citep{eo14292}, signed 5 May 2025 --- one day before
+that policy's effective date --- which paused federal funding for dangerous
+gain-of-function research and directed its revision or replacement.
+
+The replacement is the \textbf{US Government Policy for Stopping High-Risk
+Life Sciences Research} \citep{usgstopping2026}, approved 20 July 2026 and
+released 28 July 2026. \verified{} It replaces the 2024 DURC/PEPP policy and
+the earlier DURC and P3CO policies; shifts from a list-based to a risk-based
+framework and from ``oversee and mitigate'' to \emph{prohibit and stop},
+establishing federal funding prohibitions rather than only review
+requirements; introduces two categories, \textbf{Dangerous
+Gain-of-Function (DGOF)} research and \textbf{International Research of
+Concern (IROC)}; restricts federally supported life-sciences research
+conducted \emph{outside} the United States; and imposes expanded review,
+certification, monitoring, reporting and enforcement obligations on all
+institutions receiving federal life-sciences funding.}
+
+\paragraph{The question that matters most, and is not answered here.}
+Whether purely computational or in-silico biological design work falls
+within ``life sciences research'' under this policy \emph{determines whether
+a pipeline of this kind is in regulatory scope at all}. The policy text
+could not be retrieved from the review environment, so the DGOF and IROC
+definitions are \unresolved. This should be the first thing read in full.
+Institutions are meanwhile acting beyond the federal floor --- the
+University of California mandated a pause on work meeting the DGOF
+definition regardless of funding source, effective May 2026. \secondary
+
+\paragraph{Other changes that overturn common assumptions.}
+
+\begin{itemize}
+  \item \flag{EO 14110 was rescinded} \citep{eo14110} in January 2025;
+  EO 14179 and the July 2025 AI Action Plan \citep{aiactionplan2025} are
+  operative. Importantly, \emph{artifacts produced under} EO 14110 ---
+  including the NIST AI RMF and agency AI policies --- survive its
+  rescission. \secondary
+
+  \item \flag{Nucleic acid synthesis screening is in limbo.} The April 2024
+  OSTP framework \citep{nucleicacid2024} made provider attestation a
+  condition of federal research funding, but EO 14292 directed its revision
+  or replacement within 90 days, a deadline that passed in August 2025 with
+  no replacement published. The Sequences of Concern definition is expected
+  to widen. If any part of a pipeline emits sequences for synthesis, the
+  implication is to build provider-attestation verification and an
+  order-level screening audit trail now, and to treat the SOC definition as
+  a configuration value rather than a design assumption. \secondary
+
+  \item \textbf{AI biological-capability evaluation is by agreement, not
+  regulation.} There is no US statutory requirement to evaluate a model for
+  biological uplift before release; the binding obligations sit in the EU AI
+  Act general-purpose AI systemic-risk regime and in provider-internal
+  frameworks. If a pipeline consumes a frontier model, the enforceable
+  safeguards sit with the provider under EU law and with the consumer
+  contractually. \secondary
+
+  \item \textbf{Where to put the hardest controls.} The NASEM consensus
+  study \citep{nasem2025ai} assesses AI-enabled biological design tools and
+  finds that AI is also a biosecurity \emph{strengthener}. Its most
+  architecturally useful conclusion is that risk concentrates at the
+  AI-to-wet-lab interface --- synthesis and physical execution --- rather
+  than in the model itself, which argues for concentrating controls at the
+  design-to-order boundary rather than attempting to gate the model.
+  \secondary
+
+  \item \flag{The NIH Guidelines are being replaced.} A draft NIH Biosafety
+  Policy for Research Involving Biohazards \citep{nihdraftbiosafety2026} was
+  released in August 2026 and would replace the NIH Guidelines
+  \citep{nihguidelines} entirely, widening scope from recombinant and
+  synthetic nucleic acids to biohazards generally with tiered risk-based
+  oversight. The comment period closed 19 October 2026; the Guidelines
+  remain operative until the replacement is final. Separately, IBC minutes
+  from meetings on or after 1 June 2025 must be posted publicly --- so
+  institutional deliberations about a programme should be assumed public.
+  \secondary
+\end{itemize}
+
+\paragraph{Export control, briefly.} Biotech equipment controls tightened in
+January 2025 with new ECCNs 3A069 and 3E069 \citep{bis3a069}, the rule's
+rationale explicitly citing the combination of such equipment with AI and
+biological design tools. Conversely, \flag{there is currently no general US
+export control on AI model weights} --- the AI Diffusion Rule was rescinded
+in May 2025 \citep{bisdiffusionrescind} --- so a risk register assuming
+otherwise is wrong. The trap is \emph{deemed export}: releasing controlled
+technology, including source code and technical data, to a foreign national
+inside the United States is a licensable event, which means repository,
+model-weight and sequence-data access control is an export-control surface
+and not only an HR process. \secondary
+
+\paragraph{Gate stacking.} A countermeasure programme typically passes four
+to five independent review gates with different owners: institutional
+biosafety; high-risk/dual-use review; IRB for human data (with single-IRB
+requirements for NIH-funded multi-site human-subjects research); select
+agent registration where applicable; and export-control review. The
+dual-use gate is the one most often discovered late.
+
+% ===========================================================================
+\section{Documentation and reporting}
+
+\concern{There is a temptation to assume a federated-learning reporting
+standard exists. It does not.}
+
+\evidence{No EQUATOR-registered consensus reporting guideline is specific to
+federated learning. \secondary{} The stage-appropriate general guidelines
+are summarised in Table~\ref{tab:reporting}; confusing SPIRIT-AI (protocol)
+with CONSORT-AI (report) is the most common error with that pair.}
+
+\begin{table}[htbp]
+\centering
+\caption{Stage-appropriate reporting guidelines. No equivalent exists that is
+specific to federated learning.}
+\label{tab:reporting}
+\begin{tabular}{L{0.34\textwidth} L{0.56\textwidth}}
+\toprule
+\textbf{Lifecycle stage} & \textbf{Guideline} \\
+\midrule
+Model development / validation & TRIPOD+AI \citep{collins2024tripodai} ---
+unifies regression and ML, adds fairness and open-science items \\
+Early-stage live clinical evaluation & DECIDE-AI \citep{vasey2022decideai}
+--- human factors and clinician--AI interaction, not accuracy \\
+Trial protocol & SPIRIT-AI \citep{cruzrivera2020spiritai} \\
+Trial report & CONSORT-AI \citep{liu2020consortai} \\
+Medical imaging AI & CLAIM 2024 Update \citep{tejani2024claim}; cite this,
+not the 2020 original \citep{mongan2020claim} \\
+Baseline minimum information & MINIMAR
+\citep{hernandezboussard2020minimar} --- a proposal, not a
+Delphi-consensus guideline \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent
+All DOIs in Table~\ref{tab:reporting} resolve to the correct publisher
+paths. \verified{} Supplement with FUTURE-AI
+\citep{lekadir2025futureai} --- 118 experts across 51 countries, a two-year
+modified-Delphi process, six principles (fairness, universality,
+traceability, usability, robustness, explainability) expanded into 28 best
+practices --- noting it is a trustworthiness and deployment framework rather
+than a reporting checklist. \verified
+
+\investigate
+\begin{itemize}
+  \item Regardless of which guideline applies, federated studies arguably
+  ought to report site count, per-site sample sizes and distributions,
+  aggregation strategy, communication rounds, privacy mechanism with unit of
+  privacy and $\varepsilon$ accounting, and \emph{per-site rather than
+  pooled} performance. Is there appetite to standardise that set?
+  \item Per artifact, three documents seem worth insisting on: a datasheet
+  per dataset snapshot \citep{gebru2021datasheets}, a model card with
+  disaggregated evaluation per model \citep{mitchell2019model}, and a model
+  info sheet for leakage \citep{kapoor2023leakage}. Datasheets are
+  qualitative by design with no conformance criteria, so pairing them with
+  machine-readable DCAT/PROV records is probably necessary.
+\end{itemize}
+
+% ===========================================================================
+\section{An architecture sketch, offered as a straw man}
+\label{sec:architecture}
+
+The following is a plausible shape, included so that it can be argued with.
+It is not a recommendation, and the concerns above are more important than
+this diagram.
+
+\begin{verbatim}
+  +---------------------------------------------------------------------+
+  | GOVERNANCE PLANE                                                    |
+  |  enrollment & identity . data-use agreements . approvals            |
+  |  privacy-budget ledger . model registry . immutable audit log       |
+  +---------------------------------------------------------------------+
+                  | policy decisions, attestations, approvals
+  +---------------------------------------------------------------------+
+  | ORCHESTRATION PLANE   (coordinator - untrusted with raw data)       |
+  |  round scheduling . participant selection . secure aggregation      |
+  |  bounds enforcement . robust aggregation . checkpointing            |
+  +---------------------------------------------------------------------+
+     ^ signed deltas / encrypted shares        v signed global model
+  +---------------------------------------------------------------------+
+  | PARTICIPANT PLANE   (per site, inside the site's boundary)          |
+  |  ingest -> harmonization -> QC gates -> snapshot -> local training  |
+  |  local eval . egress disclosure control . local audit log           |
+  +---------------------------------------------------------------------+
+  +---------------------------------------------------------------------+
+  | EVALUATION PLANE   (independent of training)                        |
+  |  held-out site benchmarks . drift & subgroup monitors . red team     |
+  +---------------------------------------------------------------------+
+  +---------------------------------------------------------------------+
+  | CONSUMPTION PLANE                                                   |
+  |  serving . decision support . reporting . feedback capture          |
+  +---------------------------------------------------------------------+
+\end{verbatim}
+
+The propositions embedded in it, each of which is contestable:
+
+\begin{enumerate}
+  \item The coordinator is untrusted with data and should be designed as
+  though it will be breached.
+  \item Egress is an enforced chokepoint implementing statistical
+  disclosure control, default-deny.
+  \item Evaluation does not report to training --- different owners,
+  different credentials, separate held-out data.
+  \item Reproducibility is infrastructure: content-addressed artifacts,
+  pinned digests, a run manifest per round.
+  \item Governance is enforced in code paths, since an approval that exists
+  only in a document is not a control.
+\end{enumerate}
+
+% ===========================================================================
+\section{Consolidated investigation agenda}
+\label{sec:agenda}
+
+Ordered by how much the answer would change the design.
+
+\begin{enumerate}
+  \item \flag{Read the July 2026 \emph{Stopping High-Risk Life Sciences
+  Research} policy in full} \citep{usgstopping2026} --- specifically the
+  DGOF and IROC definitions, and whether in-silico design is in scope. This
+  determines scope exposure more than anything else here, and is currently
+  unresolved.
+
+  \item \textbf{Decide federation versus a Trusted Research Environment}
+  on evidence rather than by default (Section~\ref{sec:alternatives}),
+  including what is lost by never inspecting the data.
+
+  \item \textbf{Establish whether poisoning robustness has been
+  characterised in the cross-silo, few-participant regime}
+  (Section~\ref{sec:adversarial}). If not, it is a gap to fill rather than
+  assume away.
+
+  \item \textbf{If a regulated device is plausible, draft the PCCP
+  Modification Protocol early} \citep{fdapccp2024} --- it constrains
+  retraining, drift monitoring, dataset versioning and acceptance
+  thresholds downstream.
+
+  \item \textbf{Commission a dedicated review of DP accounting and the unit
+  of privacy.} These notes establish that the question matters but do not
+  settle the parameter choices.
+
+  \item \textbf{Verify CDISC version numbers} directly
+  (Table~\ref{tab:standards}) --- currently low confidence.
+
+  \item \textbf{Confirm whether the FDA January 2025 AI-in-drug-development
+  draft was finalised} \citep{fdaaidrug2025} --- sources conflicted.
+
+  \item \textbf{Verify SLSA v1.2 level semantics} first-hand
+  \citep{slsa}.
+
+  \item \textbf{Track the replacement nucleic acid synthesis screening
+  framework} \citep{nucleicacid2024} and keep the Sequences of Concern
+  definition configurable.
+
+  \item \textbf{Check the ``5.2\% of healthcare FL studies are real
+  deployments'' figure} before it is used anywhere.
+\end{enumerate}
+
+\paragraph{Signals that a programme is drifting.} Raw data requested ``just
+to debug''; per-site metrics circulating informally; mapping changes without
+review; a benchmark the training team can see; an isolation procedure never
+exercised; a model card written after the model shipped; privacy parameters
+chosen to hit an accuracy target; a dual-use determination deferred to
+``later''.
+
+% ===========================================================================
+\appendix
+\section{Verification limits}
+
+These notes were compiled in an environment whose network egress proxy
+blocked most standards-body, regulator and publisher domains --- including
+\texttt{nature.com}, PubMed Central, ScienceDirect, \texttt{hl7.org},
+\texttt{cdisc.org}, \texttt{dicom.nema.org}, \texttt{w3.org},
+\texttt{nist.gov}, \texttt{fda.gov}, \texttt{whitehouse.gov},
+\texttt{eur-lex.europa.eu} and \texttt{iso.org}. Reachable:
+\texttt{arxiv.org}, \texttt{doi.org} for resolution,
+\texttt{raw.githubusercontent.com}, and search indexes.
+
+Consequently most citations are marked \secondary: DOIs were resolution-
+tested and official URLs were drawn from official-domain search hits rather
+than constructed, but the primary documents were largely not read in full.
+Two claims with the highest stakes --- the EU AI Act deferral
+\citep{euomnibus2026} and the existence and effect of the 2026 high-risk
+life sciences policy \citep{usgstopping2026} --- were verified
+independently. The full text of the latter was still not obtainable, which
+is why Section~\ref{sec:biosecurity} leaves its central question open rather
+than inferring an answer.
+
+Widening the network allowlist would materially raise confidence in
+Table~\ref{tab:standards} and Sections~\ref{sec:regulatory}
+and~\ref{sec:biosecurity}. Until then, the evidence markers should be taken
+literally: \secondary{} means corroborated but not read, and \unresolved{}
+means do not rely on it.
+
+% ===========================================================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

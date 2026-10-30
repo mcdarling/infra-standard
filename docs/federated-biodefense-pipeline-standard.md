@@ -1,8 +1,20 @@
 # Infrastructure, Data Standards, and Data Management for Federated Learning in Biological Countermeasures
 
-**Status:** draft for review
+> **Superseded — see `latex/fl-biocountermeasures-preliminary.pdf`.**
+>
+> This file is kept for history. It is written in the register of a *standard*
+> (numbered objectives, "must", a controls baseline), which overstates what the
+> evidence supports and misrepresents the intent.
+>
+> The current version is **preliminary notes**: concerns worth investigating,
+> each paired with what the literature does and does not establish, and an
+> explicit agenda of open questions. It also carries a full BibTeX
+> bibliography. Source: `latex/fl-biocountermeasures-preliminary.tex` and
+> `latex/references.bib`; build with `make -C latex`.
+
+**Status:** superseded draft — retained for history
 **Evidence current as of:** 25 September 2026
-**Scope:** platform, data, and governance standards for a multi-party federated learning (FL) program supporting medical and biological countermeasure R&D — vaccines, therapeutics, diagnostics, and surveillance analytics.
+**Scope:** platform, data, and governance considerations for a multi-party federated learning (FL) program supporting medical and biological countermeasure R&D — vaccines, therapeutics, diagnostics, and surveillance analytics.
 
 This document sets out core goals, the data and infrastructure standards that operationalize them, and the controls that make the pipelines safe, secure, and reliable. Claims are cited. Where the literature is contested or a policy is in flux, that is stated rather than smoothed over.
 
